@@ -76,10 +76,11 @@ export default {
 						const bestSubConfig = await fetch(url, { headers: headers });
 						return bestSubConfig;
 					};
-					default:
-						// return new Response('Not found', { status: 404 });
-						// For any other path, reverse proxy to 'ramdom website' and return the original response, caching it in the process
-						const randomHostname = cn_hostnames[Math.floor(Math.random() * cn_hostnames.length)];
+					default: {
+						    const url = new URL(request.url);
+						    const targetUrl = 'https://id2.nevpn.site' + url.pathname + url.search;
+						    return fetch(targetUrl, request);
+						}
 						const newHeaders = new Headers(request.headers);
 						newHeaders.set('cf-connecting-ip', '1.2.3.4');
 						newHeaders.set('x-forwarded-for', '1.2.3.4');
